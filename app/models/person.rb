@@ -40,7 +40,7 @@ class Person < ActiveRecord::Base
 
     puts "Please input the number(s) of the task you want to delete."
     user = gets.chomp.to_i
-    self.todos.delete(todo_hash[user])
+    Todo.delete(todo_hash[user].id)
     puts "Your task has been deleted."
     puts self.todos
   end
