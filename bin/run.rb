@@ -1,10 +1,20 @@
 require_relative '../config/environment.rb'
 require 'csv'
- 
+require 'faker'
 
 
-# daniel = Investor.create(name: "Daniel")
-# luke = Investor.create(name: "Luke")
+150.times do 
+	name = Faker::Name.name
+	Investor.create(name: name)
+end
+
+300.times do 
+	investor_num = rand(1..150)
+	stock_num = rand(1..105)
+	amount = rand(50..1000000)
+	Investment.create(investor_id: investor_num, stock_id: stock_num, amount: amount)
+end
+
 
 
 exchanges = []
@@ -17,7 +27,6 @@ CSV.foreach(exchange_path) do |row|
 end
 
 
-# puts exchanges
 
 stocks = []
 stocks_path = 'bin/nyse.csv'
@@ -39,5 +48,3 @@ end
 binding.pry
 
 
-
-# puts stocks
