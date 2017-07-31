@@ -1,19 +1,13 @@
-class Exchanges
+class Exchanges < ActiveRecord::Base
 
-attr_accessor :name
-attr_reader :id
+# attr_accessor :name
+# attr_reader :id
 
-@@all = []
 
-def initialize(id = nil, name)
-	@name = name
-	@id = id
-	@@all << self
-end
-
-def self.all
-	@@all
-end
+# def initialize(id = nil, name)
+# 	@name = name
+# 	@id = id
+# end
 
 
 end
