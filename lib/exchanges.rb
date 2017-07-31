@@ -4,7 +4,7 @@ attr_accessor :name, :id
 
 @@all = []
 
-def initialize(name, id = nil)
+def initialize(id = nil, name)
 	@name = name
 	@id = id
 	@all << self
