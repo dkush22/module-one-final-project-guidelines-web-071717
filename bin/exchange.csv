@@ -1,5 +1,4 @@
-Rank,Exchange Name,Country
-1,NewYork Stock Exchange,United States
+1,New York Stock Exchange,United States
 2,NASDAQ,United States
 3,London Stock Exchange,United Kingdom
 4,Tokyo Stock Exchange,Japan
@@ -12,5 +11,5 @@ Rank,Exchange Name,Country
 11,Shenzhen Stock Exchange,China
 12,Korea Exchange,Korea
 13,SWX Swiss Exchange,Switzerland
-14,OMX Nordic Exchanges,"Denmark, Finland, Sweden"
+14,OMX Nordic Exchanges, Denmark
 15,Toronto Stock Exchange,Canada
