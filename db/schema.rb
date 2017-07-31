@@ -16,11 +16,12 @@ ActiveRecord::Schema.define(version: 20170731180022) do
     t.string "name"
   end
 
-  create_table "investor_stocks", force: :cascade do |t|
+  create_table "investments", force: :cascade do |t|
     t.integer "investor_id"
     t.integer "stock_id"
-    t.index ["investor_id"], name: "index_investor_stocks_on_investor_id"
-    t.index ["stock_id"], name: "index_investor_stocks_on_stock_id"
+    t.integer "amount"
+    t.index ["investor_id"], name: "index_investments_on_investor_id"
+    t.index ["stock_id"], name: "index_investments_on_stock_id"
   end
 
   create_table "investors", force: :cascade do |t|

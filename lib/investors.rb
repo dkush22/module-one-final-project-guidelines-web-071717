@@ -1,4 +1,4 @@
 class Investor < ActiveRecord::Base
-	has_many :investor_stocks
-	has_many :stocks, :through => :investor_stocks
+	has_many :investments
+	has_many :stocks, :through => :investments
 end
