@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170731150531) do
+ActiveRecord::Schema.define(version: 20170731180022) do
 
   create_table "exchanges", force: :cascade do |t|
     t.string "name"
+  end
+
+  create_table "investor_stocks", force: :cascade do |t|
+    t.integer "investor_id"
+    t.integer "stock_id"
+    t.index ["investor_id"], name: "index_investor_stocks_on_investor_id"
+    t.index ["stock_id"], name: "index_investor_stocks_on_stock_id"
   end
 
   create_table "investors", force: :cascade do |t|
@@ -21,8 +28,11 @@ ActiveRecord::Schema.define(version: 20170731150531) do
   end
 
   create_table "stocks", force: :cascade do |t|
-    t.string "name"
-    t.string "sector"
+    t.integer "exchange_id"
+    t.string  "name"
+    t.string  "ticker"
+    t.string  "sector"
+    t.index ["exchange_id"], name: "index_stocks_on_exchange_id"
   end
 
 end
