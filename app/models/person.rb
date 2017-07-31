@@ -1,7 +1,7 @@
 class Person < ActiveRecord::Base
 
   has_many :person_todos
-  has_many :todos, through: :person_todos
+  has_many :todos, through: :person_todos, dependent: :destroy
 
   def initialize(name:)
     super
@@ -27,7 +27,22 @@ class Person < ActiveRecord::Base
   end
 
   def add_todo(name)
-    Todo.create(name: name, user: self)
+    new_todo = Todo.create(name: name, user: self)
+    self.todos << new_todo
+  end
+
+  def delete_todo
+    todo_hash = {}
+    self.todos.each_with_index do |todo, idx|
+      todo_hash[idx+1] = todo
+      puts "#{idx+1}. #{todo.name}"
+    end
+
+    puts "Please input the number(s) of the task you want to delete."
+    user = gets.chomp.to_i
+    self.todos.delete(todo_hash[user])
+    puts "Your task has been deleted."
+    puts self.todos
   end
 
 
