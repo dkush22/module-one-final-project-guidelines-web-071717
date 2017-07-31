@@ -1,5 +1,6 @@
 class Stocks < ActiveRecord::Base
-
+  belongs_to :exchanges
+  has_many :investors
 	# attr_accessor :name, :ticker, :exchange_id, :sector
 	# attr_reader :id
 
