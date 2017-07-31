@@ -1,6 +1,7 @@
 class Stocks
 
 attr_accessor :name, :ticker, :exchange, :sector
+attr_reader :id
 
 @@all = []
 
