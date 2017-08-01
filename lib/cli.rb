@@ -62,6 +62,13 @@ def find_exchange(stock)
     val.name
 end
 
+def print_stocks(exchange)
+    Stock.all.each do |stock|
+        puts "#{stock.name}" if stock.exchange_id == exchange.id
+    end
+end
+
+
 def get_total_investment(stock)
     val = 0
     Investment.all.each do |inv|
@@ -73,6 +80,7 @@ def get_total_investment(stock)
     end
     val
 end
+
 
 def get_largest_investor(stock)
     arr = []
@@ -102,9 +110,64 @@ def get_largest_investor(stock)
     returnArr = [val.name, max_investment.amount]
 end
 
+def get_like_sector(stock)
+    Stock.all.each do |s| 
+        puts "#{s.name}" if s.sector == stock.sector && stock.name != s.name
+    end
+end
+
+def total_capital_in_exchange(exchange)
+    total = 0
+    Stock.all.each do  |stock|
+        if stock.exchange_id == exchange.id
+            total += get_total_investment(stock)
+        end
+    end
+    total
+end
+
+def get_largest_stock_in_exchange(exchange)
+
+    #get stocks in this exchange
+    arr = []
+    Stock.all.each do |stock|
+        arr << stock if stock.exchange_id == exchange.id
+    end
+
+    max_stock = {:stock => nil, :amount => nil}
+
+    arr.each do |stock|
+        val = get_total_investment(stock)
+        if max_stock[:stock] == nil || max_stock[:amount] < val 
+            max_stock[:stock] = stock
+            max_stock[:amount] = val 
+        end
+    end
+    max_stock 
+end
+
 def learn_exchange(exchange)
+    puts "You selected the #{exchange.name}."
+    puts ""
 
+    puts "Would you like to see all of the stocks on this exchange? 'y' or 'n'"
+    input = gets.chomp.downcase
+    if input == "y"
+        puts "The stocks on the #{exchange.name} are:"
+        print_stocks(exchange)
+    end
+    puts "Would you like to see the total amount of capital invested in this exchange? 'y' or 'n'"
+    input = gets.chomp.downcase
+    if input == "y"
+        puts "Total amount invested in the #{exchange.name} is $#{total_capital_in_exchange(exchange)}"
+    end
+    puts "Would you like to find the stock with highest market cap in this exchange? 'y' or 'n'"
+    input = gets.chomp.downcase
+    if input == "y"
+        result = get_largest_stock_in_exchange(exchange)
+        puts "The stock with the highest market cap is #{result[:stock].name} totaling $#{result[:amount]}"
 
+    end
 end
 
 def learn_stock(stock)
@@ -125,6 +188,14 @@ def learn_stock(stock)
     if input == "y"
         arr = get_largest_investor(stock)
         puts "The biggest investor of #{stock.name} is #{arr[0]} with an invesment of $#{arr[1]}."
+    end
+
+    #Q3
+
+    puts "#{stock.name} is in the #{stock.sector} sector. Would you like to see other stocks in this sector? 'y' or 'n'"
+    input = gets.chomp.downcase
+    if input == "y"
+        get_like_sector(stock)
     end
 
 
