@@ -26,16 +26,19 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def add_todo(name)
-    new_todo = Todo.create()
+  def add_todo
+    new_todo = Todo.new
+    new_todo.user = self
     self.todos << new_todo
+    new_todo.save
+    self.reload
   end
 
   def print_indexed_list
     todo_hash = {}
     self.todos.each_with_index do |todo, idx|
       todo_hash[idx+1] = todo
-      puts "#{idx+1}. #{todo.name} : #{todo.description}"
+      puts "#{idx+1}. #{todo.name} : #{todo.description} Due by: #{todo.due_date.to_s}"
     end
     todo_hash
   end
@@ -66,6 +69,20 @@ class Person < ActiveRecord::Base
     Todo.update(todo_hash[user].id, user_to_sym => user_updated)
     self.reload
     self.print_indexed_list
+  end
+
+  def due_by_days
+    puts "Input a number for next (x) days of tasks?"
+    num_days = gets.chomp.to_i
+    selected_todos = self.todos.select do |todo|
+      todo.due_date != nil && todo.due_date <= Date.today + num_days && todo.due_date >= Date.today
+    end
+    selected_todos.each_with_index do |todo, idx|
+      puts "#{idx+1}. #{todo.name} : #{todo.description} Due by: #{todo.due_date.to_s}"
+      puts
+    end
+    puts '================================'
+    puts
   end
 
 end

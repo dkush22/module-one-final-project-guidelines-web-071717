@@ -8,4 +8,6 @@ require_relative 'menu'
 # lunch = Todo.new(name: 'Lunch')
 # bob = Person.find_user('Bob')
 
-Pry.start
+Menu.new.runner
+
+# Pry.start
