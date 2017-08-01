@@ -3,22 +3,25 @@ def greet
 end
 
 def gets_user_input
-    puts "Find out more information about an Exchange or a Stock. Enter 'Exchange' or 'Stock' to find out more"
+    puts "Find out more information about an Exchange or a Stock. Enter 'Exchange' or 'Stock' to find out more. If you would like to exit the application enter 'Exit'"
 
     input = gets.chomp.downcase
 
     cond = false
-
-    if input == "stock"
+    if input == "exit"
+        exit
+    elsif input == "stock"
         return input 
     elsif input == "exchange"
         return input
     end
 
     until cond == true
-        puts "Unexpected input. Please enter 'Exchange' or 'Stock' to research their data"
+        puts "Unexpected input. Please enter 'Exchange' or 'Stock' to research their data or enter 'Exit' to exit the application"
         input = gets.chomp.downcase
-         if input == "stock"
+         if input == "exit"
+        exit
+         elsif input == "stock"
             cond == true
             return input 
         elsif input == "exchange"
@@ -30,20 +33,76 @@ def gets_user_input
 end
 
 def research_topic(topic)
+    cond = false
+
+    
     if topic == "stock"
-        puts "You chose stocks! Enter the ticker or company name."
+        puts "You chose stocks! Enter the ticker or company name. Enter 'help' for a list of companies and their tickers."
         input = gets.chomp
         stock_data = search_for_stock(input)
+        if input == "help"
+            help_stocks
+        end
+        if stock_data != nil
+            cond = true
+            return stock_data
+        end
     elsif topic == "exchange"
-        puts "You chose exchanges! Enter an exchange name."
-        input = gets.chomp
+        puts "You chose exchanges! Enter an exchange name. Enter 'help' for a list of the valid exchanges."
+        input = gets.chomp.split.map(&:capitalize).join(' ')
         exchange_data = search_for_exchange(input)
+        if input == "Help" || input == 'help'
+            help_exchanges
+        end
+        if exchange_data != nil
+            cond = true
+            return exchange_data
+        end
     end
+
+    until cond == true
+        if topic == "stock"
+            if input == 'help'
+                puts "Enter the ticker or company name. Enter 'help' for a list of companies and their tickers."
+            else
+                puts "Unexpected input! Enter the ticker or company name. Enter 'help' for a list of companies and their tickers."
+            end
+                
+            input = gets.chomp
+            stock_data = search_for_stock(input)
+            if input == "Help" || input == 'help'
+                help_stocks
+            end
+            if stock_data != nil
+                cond = true
+                return stock_data
+            end
+            
+        elsif topic == "exchange"
+            if input == "Help" || input == 'help'
+                puts "You chose exchanges! Enter an exchange name. Enter 'help' for a list of the valid exchanges."
+            else
+                puts "Unexpected input! Enter an exchange name. Enter 'help' for a list of the valid exchanges."
+            end
+
+            input = gets.chomp
+            exchange_data = search_for_exchange(input)
+            if input == "Help" || input == 'help'
+                help_exchanges
+            end
+            if exchange_data != nil
+                cond = true
+                return exchange_data
+            end
+        end
+    end
+
+
 end
 
 def search_for_stock(searchVal)
      val = Stock.find do  |stock| 
-        stock.ticker.upcase == searchVal || stock.name.include?(searchVal)
+        stock.ticker.upcase == searchVal.upcase || stock.name.include?(searchVal) || stock.name.include?(searchVal.split.map(&:capitalize).join(' ')) || stock.name.include?(searchVal.upcase)
     end
     val
 end
@@ -72,9 +131,7 @@ end
 def get_total_investment(stock)
     val = 0
     Investment.all.each do |inv|
-        # binding.pry
         if stock.id == inv.stock_id
-            # binding.pry
             val += inv.amount
         end
     end
@@ -155,18 +212,40 @@ def learn_exchange(exchange)
     if input == "y"
         puts "The stocks on the #{exchange.name} are:"
         print_stocks(exchange)
+        puts ""
+    elsif input == "n"
+    else puts "This is not a valid input"
     end
     puts "Would you like to see the total amount of capital invested in this exchange? 'y' or 'n'"
     input = gets.chomp.downcase
     if input == "y"
         puts "Total amount invested in the #{exchange.name} is $#{total_capital_in_exchange(exchange)}"
+        puts ""
+    elsif input == "n"
+    else puts "This is not a valid input"
     end
     puts "Would you like to find the stock with highest market cap in this exchange? 'y' or 'n'"
     input = gets.chomp.downcase
     if input == "y"
         result = get_largest_stock_in_exchange(exchange)
         puts "The stock with the highest market cap is #{result[:stock].name} totaling $#{result[:amount]}"
+        puts ""
+    elsif input == "n"
+    else puts "This is not a valid input"
+    end
+end
 
+def help_stocks
+    puts "The stock tickers and names in this database are:"
+    Stock.all.each do |stock |
+        puts "#{stock.ticker} : #{stock.name} "
+    end
+end 
+
+def help_exchanges
+    puts "The exchange in this database are:"
+    Exchange.all.each do |ex|
+        puts "#{ex.name}"
     end
 end
 
@@ -180,6 +259,9 @@ def learn_stock(stock)
     input = gets.chomp.downcase
     if input == "y"
         puts "The total invesment of #{stock.name} is $#{get_total_investment(stock)}."
+        puts ""
+    elsif input == "n"
+    else puts "This is not a valid input"
     end
 
     #Q2
@@ -188,6 +270,9 @@ def learn_stock(stock)
     if input == "y"
         arr = get_largest_investor(stock)
         puts "The biggest investor of #{stock.name} is #{arr[0]} with an invesment of $#{arr[1]}."
+        puts ""
+    elsif input == "n"
+    else puts "This is not a valid input"
     end
 
     #Q3
@@ -196,6 +281,10 @@ def learn_stock(stock)
     input = gets.chomp.downcase
     if input == "y"
         get_like_sector(stock)
+        puts ""
+    elsif input == "n"
+    else puts "This is not a valid input"
+
     end
 
 
@@ -212,16 +301,24 @@ end
 
 def run 
     greet
-    topic = gets_user_input
-    result = research_topic(topic)
 
-    if result.class == Exchange 
-        learn_exchange(result)
-    elsif result.class == Stock
-        learn_stock(result)
+    cond = false
+    
+    until cond == true
+        topic = gets_user_input
+        result = research_topic(topic)
+        if result.class == Exchange 
+            learn_exchange(result)
+        elsif result.class == Stock
+            learn_stock(result)
+        end
+        puts "Would you like to research another Stock/Exchange? 'y' or 'n' "
+        input = gets.chomp.downcase
+        if input == 'n'
+            cond = true
+        end
     end
 
-
-    # goodbye
+    goodbye
 
 end
