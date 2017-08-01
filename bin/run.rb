@@ -6,6 +6,6 @@ require_relative 'menu'
 
 # breakfast = Todo.new(name: 'breakfast')
 # lunch = Todo.new(name: 'Lunch')
-bob = Person.find_user('Bob')
+# bob = Person.find_user('Bob')
 
 Pry.start
