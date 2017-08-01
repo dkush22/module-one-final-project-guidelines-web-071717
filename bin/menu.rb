@@ -31,19 +31,15 @@ class Menu
   def get_listing_choice(user)
     loop do
       show_listing
+      puts
       puts "Enter a number: "
       input = gets.chomp.to_i
       case input
-      when 1
-        user.add_todo
-      when 2
-        user.due_by_days
-      when 3
-        user.update_todo
-      when 4
-        user.delete_todo
-      when 5
-        break
+      when 1 then user.add_todo
+      when 2 then user.due_by_days
+      when 3 then user.update_todo
+      when 4 then user.delete_todo
+      when 5 then break
       end
     end
   end
