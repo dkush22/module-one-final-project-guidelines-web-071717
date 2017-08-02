@@ -1,9 +1,9 @@
 def greet
-    puts "Welcome to our Investment Database Application! Here you can find information on the top stocks & investors on five of the world's biggest exchanges!" 
+    puts "Welcome to our Investment Database Application! Here you can find information on the top stocks & investors on five of the world's biggest exchanges!"
 end
 
 def gets_user_input
-    puts "Find out more information about an Exchange or a Stock. Enter 'Exchange' or 'Stock' to find out more. If you would like to exit the application enter 'Exit'"
+    puts "Find out more information about an Exchange or a Stock. Enter" + " 'Exchange'".bold.blue + " or" + " 'Stock'".bold.blue + " to find out more. If you would like to exit the application enter" + " 'Exit'".bold.red
 
     input = gets.chomp.downcase
 
@@ -17,7 +17,7 @@ def gets_user_input
     end
 
     until cond == true
-        puts "Unexpected input. Please enter 'Exchange' or 'Stock' to research their data or enter 'Exit' to exit the application"
+        puts "Unexpected input.".bold.red + " Please enter" + " 'Exchange'".bold.blue + " or" + "'Stock'".bold.blue + " to research their data or enter" + " 'Exit'".bold.red + " to exit the application"
         input = gets.chomp.downcase
          if input == "exit"
         exit
@@ -82,7 +82,7 @@ def research_topic(topic)
             if input == "Help" || input == 'help'
                 puts "You chose exchanges! Enter an exchange name. Enter 'help' for a list of the valid exchanges."
             else
-                puts "Unexpected input! Enter an exchange name. Enter 'help' for a list of the valid exchanges."
+                puts "Unexpected input! Enter an exchange name. Enter 'help' for a list of the valid exchanges.".colorize(:red)
             end
 
             input = gets.chomp
@@ -287,9 +287,49 @@ def learn_stock(stock)
 
     end
 
+    #Q4
+        puts "Would you like to see the daily trading data for #{stock.name}?"
+    input = gets.chomp.downcase
+    if input == "y"
+        request(stock.ticker)
+        puts ""
+    elsif input == "n"
+    else puts "This is not a valid input"
+
+    end
+
+
+
+    puts "To find out more about this stock, go to https://www.cnbc.com/quotes/?symbol=#{stock.ticker}"
+
+    puts ""
+
+    puts ""
+
 
 end
 
+def request(ticker)
+
+
+    uri = URI("https://services.last10k.com/v1/company/" + ticker + "/quote")
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+    # Request headers
+    request['Ocp-Apim-Subscription-Key'] = "b6bad9006c254c91bec10dc0cfc5ed99"
+    # Request body
+    request.body = "{body}"
+
+    response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+        http.request(request)
+    end
+
+    response.body
+    data = JSON.parse(response.body)
+    data.each do |k, v|
+        puts "#{k}: #{v}"
+    end
+end
 
 
 
@@ -301,6 +341,9 @@ end
 
 def run 
     greet
+
+    #request(stock.ticker)
+
 
     cond = false
     

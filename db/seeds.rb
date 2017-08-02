@@ -22,7 +22,7 @@ end
 
 
 #create 5 Exchanges
-exchange_path = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/exchange.csv'
+exchange_path = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/csv_files/exchange.csv'
 CSV.foreach(exchange_path) do |row|
     # Where row[i] corresponds to a zero-based value/column in the csv
     Exchange.create(name: row[1])
@@ -31,11 +31,11 @@ end
 
 
 #create 256 Stocks
-stocks_path = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/nyse.csv'
-stocks_path2 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/nasdaq.csv'
-stocks_path3 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/london_exchange.csv'
-stocks_path4 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/toronto_exchange.csv'
-stocks_path5 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/ASX.csv'
+stocks_path = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/csv_files/nyse.csv'
+stocks_path2 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/csv_files/nasdaq.csv'
+stocks_path3 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/csv_files/london_exchange.csv'
+stocks_path4 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/csv_files/toronto_exchange.csv'
+stocks_path5 = '/Users/flatironschool/Development/Projects/module-one-final-project-guidelines-web-071717/db/csv_files/ASX.csv'
 
 CSV.foreach(stocks_path) do |row|
 	Stock.create(exchange_id: 1, name: row[1], ticker: row[0], sector: row[3])
