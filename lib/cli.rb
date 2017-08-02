@@ -334,7 +334,7 @@ end
 
 
 def goodbye
-    puts "Thank you for using the application! We hope it was useful!"
+    puts "Thank you for using the application! We hope it was useful!".bold.green.blink
 end
 
 
