@@ -3,24 +3,24 @@ class Person < ActiveRecord::Base
   has_many :person_todos
   has_many :todos, through: :person_todos, dependent: :destroy
 
-  def initialize(name:)
+  def initialize(name:, zip:)
     super
     @name = name
+    @zip = zip
   end
 
   def self.find_user(find_name)
-    self.find_or_create_by(name: find_name)
+    new_person = self.find_or_create_by(name: find_name)
+    new_person.get_zip if new_person.zip.nil?
+    new_person.save
+    new_person
   end
 
-  # def return_todos
-  #   self.todos.map do |todo|
-  #     if todo.due_date
-  #       "#{todo.name} #{todo.due_date}"
-  #     else
-  #       "#{todo.name}"
-  #     end
-  #   end
-  # end
+  def get_zip
+    puts "what is your ZIP Code?"
+    input = gets.chomp.to_i
+    self.zip = input
+  end
 
   def add_todo
     new_todo = Todo.new

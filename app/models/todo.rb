@@ -11,6 +11,7 @@ class Todo < ActiveRecord::Base
     @description = self.set_description
   end
 
+
   def set_due_date
     puts "In how many days time do you want this to be due?"
     due_date = gets.chomp.to_i
@@ -28,6 +29,5 @@ class Todo < ActiveRecord::Base
     description = gets.chomp
     self.description = description
   end
-
 
 end

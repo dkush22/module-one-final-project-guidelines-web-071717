@@ -25,7 +25,8 @@ class Menu
     puts "2. Show todos"
     puts "3. Update todo"
     puts "4. Delete todo"
-    puts "5. Exit"
+    puts "5. Show me the weather"
+    puts "6. Exit"
   end
 
   def get_listing_choice(user)
@@ -39,11 +40,10 @@ class Menu
       when 2 then user.due_by_days
       when 3 then user.update_todo
       when 4 then user.delete_todo
-      when 5 then break
+      when 5 then Weather.retrieve(user.zip)
+      when 6 then break
       end
     end
   end
-
-
 
 end

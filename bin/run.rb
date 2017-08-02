@@ -1,5 +1,4 @@
 require_relative '../config/environment'
-require_relative 'menu'
 
 # bob = Person.new(name: 'Bob')
 # peter = Person.new(name: 'Peter')
