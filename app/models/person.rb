@@ -3,10 +3,9 @@ class Person < ActiveRecord::Base
   has_many :person_todos
   has_many :todos, through: :person_todos, dependent: :destroy
 
-  def initialize(name:, zip:)
+  def initialize(name:)
     super
     @name = name
-    @zip = zip
   end
 
   def self.find_user(find_name)
@@ -44,11 +43,16 @@ class Person < ActiveRecord::Base
     puts
     puts "Please input the number of the task you want to delete."
     user = gets.chomp.to_i
-    Todo.delete(todo_hash[user].id)
+    self.todos.destroy(todo_hash[user].id)
 
     puts "Your task has been deleted."
     self.reload
-    # self.print_indexed_list
+  end
+
+  def delete_completed(task)
+    if task.status.downcase == "completed" || task.status.downcase == "complete" || task.status.downcase == "completed"
+      self.todos.destroy(task.id)
+    end
   end
 
   def update_todo
@@ -65,6 +69,7 @@ class Person < ActiveRecord::Base
     puts "What do you want to change it to?"
     user_updated = gets.chomp
     Todo.update(todo_hash[user].id, user_to_sym => user_updated)
+    delete_completed(todo_hash[user])
     self.reload
     self.print_indexed_list
   end
@@ -87,37 +92,38 @@ class Person < ActiveRecord::Base
       puts "\nYour todos are:"
       list.each_with_index do |todo, idx|
         puts "#{idx+1}. #{todo.name} : #{todo.description} Due by: #{todo.due_date.to_date.to_s}"
+        if todo.people.length > 1
+          todo.people.each do |person|
+            puts "#{person.name} also has this task.\n" if person.name != self.name
+          end
+        end
       end
       puts "\nEnter any input to continue:\n"
       gets
     end
   end
 
+  def all_people_minus_self
+    all_people_m_self = Person.all - [self]
+  end
+
   def show_users
-    Person.all.each_with_index do |person, idx|
+    all_people_minus_self.each_with_index do |person, idx|
       puts "#{idx+1}: #{person.name}" unless person == self
     end
   end
-
-
-  # def add_user_to_todo
-  #   todo_hash = self.print_indexed_list
-  #   puts "Select a todo to add a user to:"
-  #   input = gets.chomp.to_i
-  #   self.class.show_users
-  #   puts "Enter a user to add: "
-  #   user_choice = gets.chomp.to_i
-  #   Person.all[user_choice - 1].todos << [todo]
-  # end
 
   def add_user_to_new_todo(todo_add)
     puts "Add another user to todo?"
     input = gets.chomp.downcase
     if input == 'yes' || input == 'y'
       self.show_users
-      puts "Enter a user to add: "
-      user_choice = gets.chomp.to_i
-      Person.all[user_choice - 1].todos << todo_add
+      puts "Enter the number of the user(s) to add: "
+      user_choice = gets.chomp
+      user_choice_array = user_choice.delete(" ").split(",")
+      user_choice_array.each do |user_choice|
+        self.all_people_minus_self[user_choice.to_i - 1].todos << todo_add
+      end
     end
   end
 

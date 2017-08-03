@@ -30,4 +30,12 @@ class Todo < ActiveRecord::Base
     self.description = description
   end
 
+  def self.clean_up
+    Todo.all.each do |todo|
+      if todo.people.empty? || todo.due_date < Date.today
+        Todo.destroy(todo.id)
+      end
+    end
+  end
+
 end
