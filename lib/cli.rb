@@ -1,5 +1,16 @@
 def greet
-    puts "Welcome to our Investment Database Application! Here you can find information on the top stocks & investors on five of the world's biggest exchanges!"
+    puts "
+
+             ######  ########  #######   ######  ##    ##             ##     ##    ###    ########  ##    ## ######## ######## 
+            ##    ##    ##    ##     ## ##    ## ##   ##              ###   ###   ## ##   ##     ## ##   ##  ##          ##    
+            ##          ##    ##     ## ##       ##  ##               #### ####  ##   ##  ##     ## ##  ##   ##          ##    
+             ######     ##    ##     ## ##       #####                ## ### ## ##     ## ########  #####    ######      ##    
+                  ##    ##    ##     ## ##       ##  ##               ##     ## ######### ##   ##   ##  ##   ##          ##    
+            ##    ##    ##    ##     ## ##    ## ##   ##              ##     ## ##     ## ##    ##  ##   ##  ##          ##    
+             ######     ##     #######   ######  ##    ##             ##     ## ##     ## ##     ## ##    ## ########    ##    
+
+
+    Welcome to our Investment Database Application! Here you can find information on the top stocks & investors on five of the world's biggest exchanges!"
 end
 
 def gets_user_input
